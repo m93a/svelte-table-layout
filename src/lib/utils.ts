@@ -3,17 +3,17 @@ export function countColumsInRow(row: HTMLTableRowElement): number {
 	for (const cell of row.children) {
 		count += Math.max(1, parseInt(cell.getAttribute('colspan') ?? '1'));
 	}
-  return count;
+	return count;
 }
 export function countColumnsInTable(table: HTMLTableElement): number {
-  let count = 0;
-  for (const body of table.children) {
-    for (const row of body.children) {
-      const c = countColumsInRow(row as any);
-      count = Math.max(count, c);
-    }
-  }
-  return count;
+	let count = 0;
+	for (const body of table.children) {
+		for (const row of body.children) {
+			const c = countColumsInRow(row as any);
+			count = Math.max(count, c);
+		}
+	}
+	return count;
 }
 
 /**
@@ -22,9 +22,9 @@ export function countColumnsInTable(table: HTMLTableElement): number {
 export function mapOpt<T, S>(value: T | undefined, fn: (value: T) => S | undefined): S | undefined;
 export function mapOpt<T, S>(value: T | undefined, fn: (value: T) => S | undefined, def: S): S;
 export function mapOpt<T, S>(
-    value: T | undefined,
-    fn: (value: T) => S | undefined,
-    def?: S
+	value: T | undefined,
+	fn: (value: T) => S | undefined,
+	def?: S
 ): S | undefined {
-    return (value === undefined ? undefined : fn(value)) ?? def;
+	return (value === undefined ? undefined : fn(value)) ?? def;
 }

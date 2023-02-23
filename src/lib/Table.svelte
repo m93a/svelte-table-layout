@@ -4,21 +4,21 @@
 	import { readable, writable } from 'svelte/store';
 	import { countColumnsInTable } from './utils';
 	let table: HTMLTableElement;
-  let columnCount: number = 0;
+	let columnCount: number = 0;
 
-  // Observe the table's DOM
-  const onChange = () => {
-    columnCount = countColumnsInTable(table);
-  };
+	// Observe the table's DOM
+	const onChange = () => {
+		columnCount = countColumnsInTable(table);
+	};
 	const observer = browser ? new MutationObserver(onChange) : undefined;
 	onMount(() => {
 		observer!.observe(table, {
 			attributes: true,
-      attributeFilter: ['colspan'],
-      childList: true,
+			attributeFilter: ['colspan'],
+			childList: true,
 			subtree: true
 		});
-    onChange();
+		onChange();
 	});
 	onDestroy(() => {
 		observer?.disconnect();
@@ -35,7 +35,7 @@
 	table {
 		display: grid;
 		width: fit-content;
-    grid-template-columns: repeat(var(--table-column-count), 1fr);
+		grid-template-columns: repeat(var(--table-column-count), 1fr);
 
 		:global(tr),
 		:global(th),
