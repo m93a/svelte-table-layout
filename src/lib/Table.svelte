@@ -1,14 +1,26 @@
 <script lang="ts">
 	import { browser } from '$app/environment';
 	import { onDestroy, onMount } from 'svelte';
-	import { readable, writable } from 'svelte/store';
-	import { countColumnsInTable } from './utils';
+	import { countColumnsInTable, setColumnIndicesInTable, setRowIndicesInTable } from './utils';
 	let table: HTMLTableElement;
 	let columnCount: number = 0;
+
+	// standard HTML attrs
+	export let style: string = '';
+	export let id: string | undefined = undefined;
+	let klass: string | undefined = undefined;
+	export { klass as class };
+
+	$: allStyles = `
+    --table-column-count: ${columnCount};
+    ${style}
+  `;
 
 	// Observe the table's DOM
 	const onChange = () => {
 		columnCount = countColumnsInTable(table);
+		setRowIndicesInTable(table);
+		setColumnIndicesInTable(table);
 	};
 	const observer = browser ? new MutationObserver(onChange) : undefined;
 	onMount(() => {
@@ -25,7 +37,7 @@
 	});
 </script>
 
-<table bind:this={table} style:--table-column-count={columnCount}>
+<table bind:this={table} style={allStyles} {id} class={klass}>
 	<tbody>
 		<slot />
 	</tbody>

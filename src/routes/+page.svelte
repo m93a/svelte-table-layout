@@ -42,3 +42,32 @@ for classic HTML tables with some new features, like decimal point alignment or 
 		</Row>
 	</Table>
 </p>
+
+<h2>Colspan and rowspan</h2>
+<Table>
+	<Row>
+		<Cell>lil</Cell>
+		<Cell colspan={2} style="background: lightblue">widewidewide</Cell>
+		<Cell rowspan={2} style="background: lightpink">tall</Cell>
+		<Cell>wa</Cell>
+	</Row>
+	<Row>
+		<Cell>smol</Cell>
+		<Cell>tiny</Cell>
+		<Cell>mimi</Cell>
+		<Cell>nunu</Cell>
+	</Row>
+</Table>
+
+<h2>Colored rows</h2>
+<Table>
+	<Row style="background: gray">
+		<Cell>grey</Cell>
+		<Cell>row</Cell>
+		<Cell>with no decoration</Cell>
+	</Row>
+	<Row style="background: pink; border: 1px solid red;">
+		<Cell colspan={2}>pink row</Cell>
+		<Cell>with red border</Cell>
+	</Row>
+</Table>
