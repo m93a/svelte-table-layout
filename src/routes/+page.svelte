@@ -1,5 +1,6 @@
-<script>
+<script lang="ts">
 	import Table, { Row, Cell } from '$lib';
+	let columns: number[] = [];
 </script>
 
 <h1>Svelte Table Layout</h1>
@@ -71,3 +72,35 @@ for classic HTML tables with some new features, like decimal point alignment or 
 		<Cell>with red border</Cell>
 	</Row>
 </Table>
+
+<h2>Copying table dimensions</h2>
+<p>
+	Template table:
+	<Table bind:computedColumnWidths={columns}>
+		<Row>
+			<Cell>a-really-long-cell</Cell>
+			<Cell>normal-cell</Cell>
+			<Cell>xd</Cell>
+		</Row>
+		<Row>
+			<Cell>lorem</Cell>
+			<Cell>ipsum</Cell>
+			<Cell>dolor-sit</Cell>
+		</Row>
+	</Table>
+</p>
+<p>
+	Reflecting table:
+	<Table {columns}>
+		<Row>
+			<Cell>a</Cell>
+			<Cell>b</Cell>
+			<Cell>c</Cell>
+		</Row>
+		<Row>
+			<Cell>d</Cell>
+			<Cell>e</Cell>
+			<Cell>f</Cell>
+		</Row>
+	</Table>
+</p>

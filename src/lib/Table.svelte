@@ -1,9 +1,9 @@
 <script lang="ts">
-	import { browser } from '$app/environment';
-	import { onDestroy, onMount } from 'svelte';
-	import { countColumnsInTable, setColumnIndicesInTable, setRowIndicesInTable } from './utils';
+	import { mapOpt, observe, type GridSize } from './utils';
 	let table: HTMLTableElement;
 	let columnCount: number = 0;
+
+	export let columns: GridSize[] | undefined = undefined;
 
 	// standard HTML attrs
 	export let style: string = '';
@@ -11,30 +11,33 @@
 	let klass: string | undefined = undefined;
 	export { klass as class };
 
+	// output props
+	export let computedColumnWidths: number[] = [];
+	export let computedRowHeights: number[] = [];
+
+	$: templateCols = mapOpt(
+		columns,
+		(c) =>
+			`grid-template-columns: ${c.map((s) => (typeof s === 'number' ? s + 'px' : s)).join(' ')};`,
+		''
+	);
+
 	$: allStyles = `
     --table-column-count: ${columnCount};
+    ${templateCols}
     ${style}
   `;
 
 	// Observe the table's DOM
-	const onChange = () => {
-		columnCount = countColumnsInTable(table);
-		setRowIndicesInTable(table);
-		setColumnIndicesInTable(table);
-	};
-	const observer = browser ? new MutationObserver(onChange) : undefined;
-	onMount(() => {
-		observer!.observe(table, {
-			attributes: true,
-			attributeFilter: ['colspan'],
-			childList: true,
-			subtree: true
-		});
-		onChange();
+	observe(() => table, {
+		columnCountChanged: (c) => (columnCount = c),
+		dimensionsChanged: (d) => {
+			computedColumnWidths = d.computedColumnWidths;
+			computedRowHeights = d.computedRowHeights;
+		}
 	});
-	onDestroy(() => {
-		observer?.disconnect();
-	});
+
+	$: console.log('dimensions: ', computedColumnWidths, computedRowHeights);
 </script>
 
 <table bind:this={table} style={allStyles} {id} class={klass}>
@@ -47,7 +50,7 @@
 	table {
 		display: grid;
 		width: fit-content;
-		grid-template-columns: repeat(var(--table-column-count), 1fr);
+		grid-template-columns: repeat(var(--table-column-count), max-content);
 
 		:global(tr),
 		:global(th),
