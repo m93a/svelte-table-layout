@@ -104,3 +104,27 @@ for classic HTML tables with some new features, like decimal point alignment or 
 		</Row>
 	</Table>
 </p>
+
+<h2>Column groups</h2>
+<Table columns={[
+  { span: 1 },
+  { span: 2 },
+  { span: 1 },
+  { span: 1 },
+]}>
+  <Row>
+    <Cell colspan="row">this cell spans the entire row</Cell>
+  </Row>
+  <Row>
+    <Cell>a</Cell>
+    <Cell>b</Cell>
+    <Cell>c</Cell>
+    <Cell>d</Cell>
+    <Cell>e</Cell>
+  </Row>
+  <Row>
+    <Cell>1</Cell>
+    <Cell colspan="group">2</Cell>
+    <Cell colspan="row">2</Cell>
+  </Row>
+</Table>

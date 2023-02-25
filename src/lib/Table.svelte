@@ -1,43 +1,54 @@
 <script lang="ts">
-	import { mapOpt, observe, type GridSize } from './utils';
-	let table: HTMLTableElement;
-	let columnCount: number = 0;
+	import { writable } from 'svelte/store';
+	import { mapOpt, observe, type ColumnsSpec, type Grid } from './utils';
 
-	export let columns: GridSize[] | undefined = undefined;
+	export let columns: ColumnsSpec | undefined = undefined;
+	const columns$ = writable<typeof columns>(columns);
+	$: columns$.set(columns);
 
 	// standard HTML attrs
 	export let style: string = '';
 	export let id: string | undefined = undefined;
 	let klass: string | undefined = undefined;
 	export { klass as class };
+	let table: HTMLTableElement = undefined as any;
+	export { table as this };
 
 	// output props
 	export let computedColumnWidths: number[] = [];
 	export let computedRowHeights: number[] = [];
+	export let grid: Grid = { rows: [], columns: [] };
 
 	$: templateCols = mapOpt(
 		columns,
 		(c) =>
-			`grid-template-columns: ${c.map((s) => (typeof s === 'number' ? s + 'px' : s)).join(' ')};`,
+			`grid-template-columns: ${grid.columns
+				.map(({ group }) => {
+					const w = group?.width;
+					if (w === undefined) return 'max-content';
+					if (typeof w === 'number') return `${w}px`;
+					return w;
+				})
+				.join(' ')};`,
 		''
 	);
 
 	$: allStyles = `
-    --table-column-count: ${columnCount};
+    --table-column-count: ${grid.columns.length};
     ${templateCols}
     ${style}
   `;
 
 	// Observe the table's DOM
-	observe(() => table, {
-		columnCountChanged: (c) => (columnCount = c),
+	observe({
+		getTable: () => table,
+		columnSpec: columns$,
+		gridChanged: (g) => (grid = g),
 		dimensionsChanged: (d) => {
 			computedColumnWidths = d.computedColumnWidths;
 			computedRowHeights = d.computedRowHeights;
 		}
 	});
-
-	$: console.log('dimensions: ', computedColumnWidths, computedRowHeights);
 </script>
 
 <table bind:this={table} style={allStyles} {id} class={klass}>
@@ -52,10 +63,12 @@
 		width: fit-content;
 		grid-template-columns: repeat(var(--table-column-count), max-content);
 
-		:global(tr),
-		:global(th),
+		:global(colgroup),
 		:global(tbody),
-		:global(thead) {
+		:global(thead),
+		:global(tfoot),
+		:global(tr),
+		:global(th) {
 			display: contents;
 		}
 
