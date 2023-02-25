@@ -1,4 +1,5 @@
 <script lang="ts">
+	import { browser } from '$app/environment';
 	import { writable } from 'svelte/store';
 	import { mapOpt, observe, type ColumnsSpec, type Grid } from './utils';
 
@@ -51,14 +52,14 @@
 	});
 </script>
 
-<table bind:this={table} style={allStyles} {id} class={klass}>
+<table bind:this={table} style={allStyles} {id} class={klass} class:ssr={!browser}>
 	<tbody>
 		<slot />
 	</tbody>
 </table>
 
 <style lang="scss">
-	table {
+	table:not(.ssr) {
 		display: grid;
 		width: fit-content;
 		grid-template-columns: repeat(var(--table-column-count), max-content);

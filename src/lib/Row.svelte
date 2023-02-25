@@ -16,6 +16,7 @@
 	tr::before {
 		content: '';
 		grid-row-start: var(--table-row-index);
+		grid-row-end: span 1;
 		grid-column-start: 1;
 		grid-column-end: span var(--table-column-count);
 		background: inherit;
