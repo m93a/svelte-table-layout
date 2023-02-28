@@ -39,23 +39,18 @@
 	export let computedRowHeights: number[] = [];
 	export let grid: Grid = { rows: [], columns: [] };
 
-	$: templateCols = mapOpt(
-		columns,
-		(c) =>
-			`grid-template-columns: ${grid.columns
-				.map(({ group }) => {
-					const w = group?.width;
-					if (w === undefined) return 'var(--table-column-sizing)';
-					if (typeof w === 'number') return `${w}px`;
-					return w;
-				})
-				.join(' ')};`,
-		''
-	);
+	$: templateCols = `grid-template-columns: ${grid.columns
+		.map(({ group }) => {
+			const w = group?.width;
+			if (w === undefined) return 'var(--table-column-sizing)';
+			if (typeof w === 'number') return `${w}px`;
+			return w;
+		})
+		.join(' ')};`;
 
 	$: allStyles = `
     --table-column-count: ${grid.columns.length};
-		--table-column-sizing ${columnSizing};
+		--table-column-sizing: ${columnSizing};
     ${templateCols}
     ${style}
   `;
@@ -72,7 +67,15 @@
 	});
 </script>
 
-<table bind:this={table} style={allStyles} {id} {title} class={klass} class:ssr={!browser} {...dataAttrs}>
+<table
+	bind:this={table}
+	style={allStyles}
+	{id}
+	{title}
+	class={klass}
+	class:ssr={!browser}
+	{...dataAttrs}
+>
 	{#if $$slots.head}
 		<thead bind:this={thead} style={headStyle} id={headId} class={headClass}>
 			<slot name="head" />

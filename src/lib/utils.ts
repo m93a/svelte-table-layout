@@ -1,5 +1,5 @@
 import { browser } from '$app/environment';
-import { onDestroy, onMount } from 'svelte';
+import { onDestroy, onMount, tick } from 'svelte';
 import type { Readable } from 'svelte/store';
 
 export type GridSize =
@@ -297,7 +297,7 @@ export function observe({
 	const resizeObserver = new ResizeObserver(onResize);
 	const mutationObserver = new MutationObserver(onMutation);
 
-	onMount(() => {
+	onMount(async () => {
 		table = getTable();
 
 		mutationObserver.observe(table, {
@@ -309,6 +309,9 @@ export function observe({
 
 		onMutation();
 		onResize();
+
+		await tick();
+		onMutation();
 	});
 
 	onDestroy(() => {
