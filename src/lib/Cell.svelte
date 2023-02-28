@@ -87,7 +87,7 @@
 {/if}
 
 <style lang="scss">
-	td {
+	td, th {
 		grid-column: var(--table-column-index) / span var(--table-cell-colspan);
 		grid-row: var(--table-row-index) / span var(--table-cell-rowspan);
 	}
