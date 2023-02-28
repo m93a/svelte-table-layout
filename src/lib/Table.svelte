@@ -7,6 +7,8 @@
 	const columns$ = writable<typeof columns>(columns);
 	$: columns$.set(columns);
 
+	export let columnSizing: string = 'max-content';
+
 	// standard HTML attrs
 	export let style: string = '';
 	export let title: string = '';
@@ -43,7 +45,7 @@
 			`grid-template-columns: ${grid.columns
 				.map(({ group }) => {
 					const w = group?.width;
-					if (w === undefined) return 'max-content';
+					if (w === undefined) return 'var(--table-column-sizing)';
 					if (typeof w === 'number') return `${w}px`;
 					return w;
 				})
@@ -53,6 +55,7 @@
 
 	$: allStyles = `
     --table-column-count: ${grid.columns.length};
+		--table-column-sizing ${columnSizing};
     ${templateCols}
     ${style}
   `;
@@ -93,7 +96,7 @@
 	table:not(.ssr) {
 		display: grid;
 		width: fit-content;
-		grid-template-columns: repeat(var(--table-column-count), max-content);
+		grid-template-columns: repeat(var(--table-column-count), var(--table-column-sizing));
 
 		:global(colgroup),
 		:global(tbody),
