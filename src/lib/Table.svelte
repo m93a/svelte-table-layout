@@ -109,9 +109,22 @@
 			display: contents;
 		}
 
+		:global(tr::before) {
+			content: '';
+			grid-row-start: var(--table-row-index);
+			grid-row-end: span 1;
+			grid-column-start: 1;
+			grid-column-end: span var(--table-column-count);
+			background: inherit;
+			border: inherit;
+		}
+
 		:global(tr) {
-			:global(td) {
-				display: inline;
+			:global(td),
+			:global(th) {
+				// display: inline;
+				grid-column: var(--table-column-index) / span var(--table-cell-colspan);
+				grid-row: var(--table-row-index) / span var(--table-cell-rowspan);
 			}
 		}
 	}
