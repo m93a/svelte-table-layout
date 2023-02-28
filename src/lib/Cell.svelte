@@ -1,6 +1,7 @@
 <script lang="ts">
 	export let colspan: number | 'group' | 'row' = 1;
 	export let rowspan: number = 1;
+	export let header: boolean = false;
 
 	// standard HTML attrs
 	export let style: string = '';
@@ -16,12 +17,66 @@
     ${style}
   `;
 
-  const asAny = (x: any) => x;
+	const asAny = (x: any) => x;
 </script>
 
-<td bind:this={that} {id} class={klass} colspan={asAny(colspan)} {rowspan} style={allStyles}>
-	<slot />
-</td>
+{#if header}
+	<th
+		bind:this={that}
+		{id}
+		class={klass}
+		colspan={asAny(colspan)}
+		{rowspan}
+		style={allStyles}
+		on:click
+		on:mousedown
+		on:mouseup
+		on:mouseenter
+		on:mouseleave
+		on:mousemove
+		on:pointerdown
+		on:pointerup
+		on:pointerenter
+		on:pointerleave
+		on:pointermove
+		on:pointerout
+		on:pointerout
+		on:pointercancel
+		on:keydown
+		on:keypress
+		on:keyup
+	>
+		<slot />
+	</th>
+{:else}
+	<td
+		bind:this={that}
+		{id}
+		class={klass}
+		colspan={asAny(colspan)}
+		{rowspan}
+		style={allStyles}
+		on:click
+		on:mousedown
+		on:mouseup
+		on:mouseenter
+		on:mouseleave
+		on:mousemove
+		on:pointerdown
+		on:pointerup
+		on:pointerenter
+		on:pointerleave
+		on:pointermove
+		on:pointerout
+		on:pointerout
+		on:pointercancel
+		on:keydown
+		on:keypress
+		on:keyup
+	>
+		<slot />
+	</td>
+{/if}
 
 <style lang="scss">
 	td {

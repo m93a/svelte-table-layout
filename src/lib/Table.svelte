@@ -82,6 +82,10 @@
 </table>
 
 <style lang="scss">
+	table {
+		font-variant-numeric: tabular-nums;
+	}
+
 	table:not(.ssr) {
 		display: grid;
 		width: fit-content;
