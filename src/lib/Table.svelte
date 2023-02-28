@@ -9,11 +9,15 @@
 
 	// standard HTML attrs
 	export let style: string = '';
+	export let title: string = '';
 	export let id: string | undefined = undefined;
 	let klass: string | undefined = undefined;
 	export { klass as class };
 	let table: HTMLTableElement = undefined as any;
 	export { table as this };
+	export let data: Record<string, any> = {};
+	let dataAttrs: Record<`data-${string}`, any>;
+	$: dataAttrs = Object.fromEntries(Object.entries(data).map(([k, v]) => [`data-${k}`, v]));
 
 	export let headStyle: string = '';
 	export let headId: string | undefined = undefined;
@@ -65,7 +69,7 @@
 	});
 </script>
 
-<table bind:this={table} style={allStyles} {id} class={klass} class:ssr={!browser}>
+<table bind:this={table} style={allStyles} {id} {title} class={klass} class:ssr={!browser} {...dataAttrs}>
 	{#if $$slots.head}
 		<thead bind:this={thead} style={headStyle} id={headId} class={headClass}>
 			<slot name="head" />

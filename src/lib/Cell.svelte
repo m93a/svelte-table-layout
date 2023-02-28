@@ -5,11 +5,15 @@
 
 	// standard HTML attrs
 	export let style: string = '';
+	export let title: string = '';
 	export let id: string | undefined = undefined;
 	let klass: string | undefined = undefined;
 	export { klass as class };
 	let that: HTMLTableCellElement = undefined as any;
 	export { that as this };
+	export let data: Record<string, any> = {};
+	let dataAttrs: Record<`data-${string}`, any>;
+	$: dataAttrs = Object.fromEntries(Object.entries(data).map(([k, v]) => [`data-${k}`, v]));
 
 	$: allStyles = `
     --table-cell-colspan: ${colspan};
@@ -23,11 +27,13 @@
 {#if header}
 	<th
 		bind:this={that}
+		{title}
 		{id}
 		class={klass}
 		colspan={asAny(colspan)}
 		{rowspan}
 		style={allStyles}
+		{...dataAttrs}
 		on:click
 		on:mousedown
 		on:mouseup
@@ -51,11 +57,13 @@
 {:else}
 	<td
 		bind:this={that}
+		{title}
 		{id}
 		class={klass}
 		colspan={asAny(colspan)}
 		{rowspan}
 		style={allStyles}
+		{...dataAttrs}
 		on:click
 		on:mousedown
 		on:mouseup
