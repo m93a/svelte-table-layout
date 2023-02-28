@@ -99,8 +99,7 @@
 		:global(tbody),
 		:global(thead),
 		:global(tfoot),
-		:global(tr),
-		:global(th) {
+		:global(tr) {
 			display: contents;
 		}
 
