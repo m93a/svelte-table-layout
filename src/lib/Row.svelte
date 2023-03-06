@@ -12,6 +12,30 @@
 	$: dataAttrs = Object.fromEntries(Object.entries(data).map(([k, v]) => [`data-${k}`, v]));
 </script>
 
-<tr bind:this={that} {title} {id} {style} class={klass} {...dataAttrs}>
+<tr
+	bind:this={that}
+	{title}
+	{id}
+	{style}
+	class={klass}
+	{...dataAttrs}
+	on:click
+	on:mousedown
+	on:mouseup
+	on:mouseenter
+	on:mouseleave
+	on:mousemove
+	on:pointerdown
+	on:pointerup
+	on:pointerenter
+	on:pointerleave
+	on:pointermove
+	on:pointerout
+	on:pointerout
+	on:pointercancel
+	on:keydown
+	on:keypress
+	on:keyup
+>
 	<slot />
 </tr>
