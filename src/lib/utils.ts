@@ -1,4 +1,4 @@
-import { browser } from '$app/environment';
+import { BROWSER } from 'esm-env';
 import { onDestroy, onMount, tick } from 'svelte';
 import type { Readable } from 'svelte/store';
 
@@ -272,7 +272,7 @@ export function observe({
 	gridChanged,
 	dimensionsChanged
 }: ObserverParams): void {
-	if (!browser) return;
+	if (!BROWSER) return;
 
 	let table: HTMLTableElement;
 	let grid: Grid;

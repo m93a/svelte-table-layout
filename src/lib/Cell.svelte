@@ -21,6 +21,18 @@
     ${style}
   `;
 
+	type Action = (
+		element: HTMLTableCellElement,
+		params: any
+	) => void | {
+		update?: ((args: any) => void) | undefined;
+		destroy?: (() => void) | undefined;
+	};
+	type Use = Action | [callback: Action, params: any];
+	export let use: Use = () => void 0;
+
+	$: [action, arg] = Array.isArray(use) ? use : [use];
+
 	const asAny = (x: any) => x;
 </script>
 
@@ -51,6 +63,7 @@
 		on:keydown
 		on:keypress
 		on:keyup
+		use:action={arg}
 	>
 		<slot />
 	</th>
@@ -81,6 +94,7 @@
 		on:keydown
 		on:keypress
 		on:keyup
+		use:action={arg}
 	>
 		<slot />
 	</td>

@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { browser } from '$app/environment';
+	import { BROWSER } from 'esm-env';
 	import { writable } from 'svelte/store';
 	import { mapOpt, observe, type ColumnsSpec, type Grid } from './utils';
 
@@ -73,7 +73,7 @@
 	{id}
 	{title}
 	class={klass}
-	class:ssr={!browser}
+	class:ssr={!BROWSER}
 	{...dataAttrs}
 	on:click
 	on:mousedown
