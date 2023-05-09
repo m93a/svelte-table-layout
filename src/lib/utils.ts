@@ -277,7 +277,12 @@ export function observe({
 	let table: HTMLTableElement;
 	let grid: Grid;
 	let colspec: FullColumnSpec[] = [];
-	columnSpec.subscribe((c) => (colspec = fillInColumnSpec(c)));
+	columnSpec.subscribe(async (c) => {
+		colspec = fillInColumnSpec(c);
+		onMutation();
+		await tick();
+		onResize();
+	});
 
 	const onResize = () => {
 		dimensionsChanged(computeDimensions(table));
