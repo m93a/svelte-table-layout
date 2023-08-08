@@ -48,13 +48,6 @@
 		})
 		.join(' ')};`;
 
-	$: allStyles = `
-    --table-column-count: ${grid.columns.length};
-		--table-column-sizing: ${columnSizing};
-    ${templateCols}
-    ${style}
-  `;
-
 	// Observe the table's DOM
 	observe({
 		getTable: () => table,
@@ -69,7 +62,9 @@
 
 <table
 	bind:this={table}
-	style={allStyles}
+	style:--table-column-count={grid.columns.length}
+	style:--table-column-sizing={columnSizing}
+	style="{templateCols} {style}"
 	{id}
 	{title}
 	class={klass}
