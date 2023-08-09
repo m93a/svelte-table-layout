@@ -20,18 +20,10 @@ export type ColumnsSpec = number | (GridSize | FullColumnSpec)[];
 
 // iterators
 function* rowsOfTable(table: HTMLTableElement): Iterable<HTMLTableRowElement> {
-	for (const body of table.children) {
-		for (const row of body.children) {
-			if (!(row instanceof HTMLTableRowElement)) continue;
-			yield row;
-		}
-	}
+	yield* table.querySelectorAll('tr');
 }
 function* cellsOfRow(row: HTMLTableRowElement): Iterable<HTMLTableCellElement> {
-	for (const cell of row.children) {
-		if (!(cell instanceof HTMLTableCellElement)) continue;
-		yield cell;
-	}
+	yield* row.querySelectorAll('td,th');
 }
 
 // parsing
@@ -204,13 +196,13 @@ function setIndicesInGrid(grid: Grid): void {
 
 	// cell vars
 	const varsSet = new Set<Element>();
-	for (let rowIndex = 0; rowIndex < grid.rows.length; rowIndex++) {
-		const row = grid.rows[rowIndex];
+	for (const row of grid.rows) {
 		for (let colIndex = 0; colIndex < row.children.length; colIndex++) {
 			const cell = row.children[colIndex];
 			const el = cell.element;
 
 			if (varsSet.has(el)) continue;
+
 			el.style.setProperty('--table-column-index', `${colIndex + 1}`);
 			el.style.setProperty('--table-column-span', `${cell.colspan + 1}`);
 			el.style.setProperty('--table-row-span', `${cell.rowspan + 1}`);
@@ -224,6 +216,7 @@ interface Dimensions {
 	computedColumnWidths: number[];
 	computedRowHeights: number[];
 }
+
 function computeDimensions(table: HTMLTableElement): Dimensions {
 	const style = getComputedStyle(table);
 
@@ -275,7 +268,6 @@ export function observe({
 	if (!BROWSER) return;
 
 	let table: HTMLTableElement;
-	let grid: Grid;
 	let colspec: FullColumnSpec[] = [];
 
 	onMount(async () => {
@@ -284,13 +276,16 @@ export function observe({
 		};
 
 		const onMutation = () => {
-			grid = makeTableGrid(table, colspec);
-			gridChanged(grid);
+			console.count('mutation');
 
+			const grid = makeTableGrid(table, colspec);
+
+			gridChanged(grid);
 			setIndicesInGrid(grid);
 
 			resizeObserver.disconnect();
 			resizeObserver.observe(table);
+
 			observeFirstRow(table, resizeObserver);
 			observeFirstColumn(table, resizeObserver);
 		};
@@ -307,19 +302,19 @@ export function observe({
 			subtree: true
 		});
 
-		columnSpec.subscribe(async (c) => {
+		const unobserve = columnSpec.subscribe(async (c) => {
 			colspec = fillInColumnSpec(c);
-			onMutation();
+
 			await tick();
+
+			onMutation();
 			onResize();
 		});
-
-		await tick();
-		onMutation();
 
 		return () => {
 			mutationObserver.disconnect();
 			resizeObserver.disconnect();
+			unobserve();
 		};
 	});
 }

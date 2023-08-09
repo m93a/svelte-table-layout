@@ -39,14 +39,14 @@
 	export let computedRowHeights: number[] = [];
 	export let grid: Grid = { rows: [], columns: [] };
 
-	$: templateCols = `grid-template-columns: ${grid.columns
+	$: templateCols = grid.columns
 		.map(({ group }) => {
 			const w = group?.width;
 			if (w === undefined) return 'var(--table-column-sizing)';
 			if (typeof w === 'number') return `${w}px`;
 			return w;
 		})
-		.join(' ')};`;
+		.join(' ');
 
 	// Observe the table's DOM
 	observe({
@@ -64,7 +64,7 @@
 	bind:this={table}
 	style:--table-column-count={grid.columns.length}
 	style:--table-column-sizing={columnSizing}
-	style="{templateCols} {style}"
+	style="grid-template-columns: {templateCols} {style}"
 	{id}
 	{title}
 	class={klass}

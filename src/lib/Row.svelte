@@ -8,6 +8,7 @@
 	let that: HTMLTableRowElement = undefined as any;
 	export { that as this };
 	export let data: Record<string, any> = {};
+
 	let dataAttrs: Record<`data-${string}`, any>;
 	$: dataAttrs = Object.fromEntries(Object.entries(data).map(([k, v]) => [`data-${k}`, v]));
 </script>
