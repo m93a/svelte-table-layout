@@ -1,5 +1,5 @@
 import { BROWSER } from 'esm-env';
-import { onDestroy, onMount, tick } from 'svelte';
+import { onMount, tick } from 'svelte';
 import type { Readable } from 'svelte/store';
 
 export type GridSize =
@@ -277,32 +277,27 @@ export function observe({
 	let table: HTMLTableElement;
 	let grid: Grid;
 	let colspec: FullColumnSpec[] = [];
-	columnSpec.subscribe(async (c) => {
-		colspec = fillInColumnSpec(c);
-		onMutation();
-		await tick();
-		onResize();
-	});
-
-	const onResize = () => {
-		dimensionsChanged(computeDimensions(table));
-	};
-	const onMutation = () => {
-		grid = makeTableGrid(table, colspec);
-		gridChanged(grid);
-
-		setIndicesInGrid(grid);
-
-		resizeObserver.disconnect();
-		resizeObserver.observe(table);
-		observeFirstRow(table, resizeObserver);
-		observeFirstColumn(table, resizeObserver);
-	};
-
-	const resizeObserver = new ResizeObserver(onResize);
-	const mutationObserver = new MutationObserver(onMutation);
 
 	onMount(async () => {
+		const onResize = () => {
+			dimensionsChanged(computeDimensions(table));
+		};
+
+		const onMutation = () => {
+			grid = makeTableGrid(table, colspec);
+			gridChanged(grid);
+
+			setIndicesInGrid(grid);
+
+			resizeObserver.disconnect();
+			resizeObserver.observe(table);
+			observeFirstRow(table, resizeObserver);
+			observeFirstColumn(table, resizeObserver);
+		};
+
+		const resizeObserver = new ResizeObserver(onResize);
+		const mutationObserver = new MutationObserver(onMutation);
+
 		table = getTable();
 
 		mutationObserver.observe(table, {
@@ -312,16 +307,20 @@ export function observe({
 			subtree: true
 		});
 
-		onMutation();
-		onResize();
+		columnSpec.subscribe(async (c) => {
+			colspec = fillInColumnSpec(c);
+			onMutation();
+			await tick();
+			onResize();
+		});
 
 		await tick();
 		onMutation();
-	});
 
-	onDestroy(() => {
-		mutationObserver.disconnect();
-		resizeObserver.disconnect();
+		return () => {
+			mutationObserver.disconnect();
+			resizeObserver.disconnect();
+		};
 	});
 }
 
