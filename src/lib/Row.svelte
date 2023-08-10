@@ -6,7 +6,7 @@
 	let klass: string | undefined = undefined;
 	export { klass as class };
 	let that: HTMLTableRowElement = undefined as any;
-	export { that as this };
+	export { that as innerThis };
 	export let data: Record<string, any> = {};
 
 	let dataAttrs: Record<`data-${string}`, any>;
