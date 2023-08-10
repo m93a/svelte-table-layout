@@ -1,0 +1,11 @@
+@for $i from 0 through 24 {
+	:global(td[colspan='#{$i}']),
+	:global(th[colspan='#{$i}']) {
+		--table-column-span: #{$i + 1};
+	}
+
+	:global(td[rowspan='#{$i}']),
+	:global(th[rowspan='#{$i}']) {
+		--table-row-span: #{$i + 1};
+	}
+}

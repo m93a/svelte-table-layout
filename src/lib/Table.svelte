@@ -104,6 +104,8 @@
 </table>
 
 <style lang="scss">
+	@use './Hacks.scss';
+
 	table {
 		font-variant-numeric: tabular-nums;
 	}

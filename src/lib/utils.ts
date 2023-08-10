@@ -23,7 +23,8 @@ function* rowsOfTable(table: HTMLTableElement): Iterable<HTMLTableRowElement> {
 	yield* table.querySelectorAll('tr');
 }
 function* cellsOfRow(row: HTMLTableRowElement): Iterable<HTMLTableCellElement> {
-	yield* row.querySelectorAll('td,th');
+	yield* row.querySelectorAll('td');
+	yield* row.querySelectorAll('th');
 }
 
 // parsing
@@ -204,8 +205,7 @@ function setIndicesInGrid(grid: Grid): void {
 			if (varsSet.has(el)) continue;
 
 			el.style.setProperty('--table-column-index', `${colIndex + 1}`);
-			el.style.setProperty('--table-column-span', `${cell.colspan + 1}`);
-			el.style.setProperty('--table-row-span', `${cell.rowspan + 1}`);
+
 			varsSet.add(el);
 		}
 	}
@@ -236,20 +236,15 @@ function computeDimensions(table: HTMLTableElement): Dimensions {
 	};
 }
 function observeFirstRow(table: HTMLTableElement, observer: ResizeObserver): void {
-	for (const row of rowsOfTable(table)) {
-		for (const cell of cellsOfRow(row)) {
-			observer.observe(cell);
-		}
-		break;
-	}
+	table
+		.querySelector('tr')
+		?.querySelectorAll('td,th')
+		.forEach((cell) => observer.observe(cell));
 }
 function observeFirstColumn(table: HTMLTableElement, observer: ResizeObserver): void {
-	for (const row of rowsOfTable(table)) {
-		for (const cell of cellsOfRow(row)) {
-			observer.observe(cell);
-			break;
-		}
-	}
+	const elem = table.querySelector('tr td,tr th');
+
+	if (elem) observer.observe(elem);
 }
 
 // observe table
