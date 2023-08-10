@@ -271,8 +271,6 @@ export function observe({
 		};
 
 		const onMutation = () => {
-			console.count('mutation');
-
 			const grid = makeTableGrid(table, colspec);
 
 			gridChanged(grid);
