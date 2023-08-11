@@ -265,7 +265,7 @@ export function observe({
 	let table: HTMLTableElement;
 	let colspec: FullColumnSpec[] = [];
 
-	onMount(async () => {
+	onMount(() => {
 		const onResize = () => {
 			dimensionsChanged(computeDimensions(table));
 		};

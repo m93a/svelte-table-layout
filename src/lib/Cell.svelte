@@ -37,6 +37,8 @@
 
 <svelte:element
 	this={header ? 'th' : 'td'}
+	role="cell"
+	tabindex="0"
 	bind:this={innerThis}
 	{title}
 	{id}

@@ -70,23 +70,6 @@
 	class={klass}
 	class:ssr={!BROWSER}
 	{...dataAttrs}
-	on:click
-	on:mousedown
-	on:mouseup
-	on:mouseenter
-	on:mouseleave
-	on:mousemove
-	on:pointerdown
-	on:pointerup
-	on:pointerenter
-	on:pointerleave
-	on:pointermove
-	on:pointerout
-	on:pointerout
-	on:pointercancel
-	on:keydown
-	on:keypress
-	on:keyup
 >
 	{#if $$slots.head}
 		<thead bind:this={thead} style={headStyle} id={headId} class={headClass}>
