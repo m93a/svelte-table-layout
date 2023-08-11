@@ -5,8 +5,7 @@
 	export let id: string | undefined = undefined;
 	let klass: string | undefined = undefined;
 	export { klass as class };
-	let that: HTMLTableRowElement = undefined as any;
-	export { that as innerThis };
+	export let innerThis: HTMLTableRowElement = undefined as any;
 	export let data: Record<string, any> = {};
 
 	let dataAttrs: Record<`data-${string}`, any>;
@@ -14,7 +13,7 @@
 </script>
 
 <tr
-	bind:this={that}
+	bind:this={innerThis}
 	{title}
 	{id}
 	{style}

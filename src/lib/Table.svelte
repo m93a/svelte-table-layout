@@ -15,9 +15,9 @@
 	export let id: string | undefined = undefined;
 	let klass: string | undefined = undefined;
 	export { klass as class };
-	let table: HTMLTableElement = undefined as any;
-	export { table as this };
+	export let innerThis: HTMLTableElement = undefined as any;
 	export let data: Record<string, any> = {};
+
 	let dataAttrs: Record<`data-${string}`, any>;
 	$: dataAttrs = Object.fromEntries(Object.entries(data).map(([k, v]) => [`data-${k}`, v]));
 
@@ -50,7 +50,7 @@
 
 	// Observe the table's DOM
 	observe({
-		getTable: () => table,
+		getTable: () => innerThis,
 		columnSpec: columns$,
 		gridChanged: (g) => (grid = g),
 		dimensionsChanged: (d) => {
@@ -61,10 +61,10 @@
 </script>
 
 <table
-	bind:this={table}
+	bind:this={innerThis}
 	style:--table-column-count={grid.columns.length}
 	style:--table-column-sizing={columnSizing}
-	style="grid-template-columns: {templateCols} {style}"
+	style="grid-template-columns: {templateCols}; {style}"
 	{id}
 	{title}
 	class={klass}
