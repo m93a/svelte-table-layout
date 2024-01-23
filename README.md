@@ -1,58 +1,52 @@
-# create-svelte
+# Svelte Table Layout
 
-Everything you need to build a Svelte library, powered by [`create-svelte`](https://github.com/sveltejs/kit/tree/master/packages/create-svelte).
+A dynamic table layout for Svelte, a drop-in replacement for HTML tables that use CSS grid under the hood. It lets you easily style columns and rows even if there are cells with nontrivial colspan & rowspan.
 
-Read more about creating a library [in the docs](https://kit.svelte.dev/docs/packaging).
+```svelte
+<Table class="my-table">
+	<Row style="background: gray">
+		<Cell>grey</Cell>
+		<Cell>row</Cell>
+		<Cell>with no decoration</Cell>
+	</Row>
+	<Row style="background: pink; border: 1px solid red;">
+		<Cell colspan={2}>pink row</Cell>
+		<Cell>with red border</Cell>
+	</Row>
+</Table>
 
-## Creating a project
-
-If you're seeing this, you've probably already done this step. Congrats!
-
-```bash
-# create a new project in the current directory
-npm create svelte@latest
-
-# create a new project in my-app
-npm create svelte@latest my-app
+<style>
+	/* make all cells that intersect the third column bold */
+	:global(.my-table [data-column~='3']) {
+		font-weight: bold;
+	}
+</style>
 ```
 
-## Developing
+It also supports `colspan=row` to make cells span the entire row, and lets you align the columns of two different tables.
 
-Once you've created a project and installed dependencies with `npm install` (or `pnpm install` or `yarn`), start a development server:
+```svelte
+<Table bind:computedColumnWidths={columns}>
+	<Row>
+		<Cell>a-really-long-cell</Cell>
+		<Cell>normal-cell</Cell>
+		<Cell>xd</Cell>
+	</Row>
+	<Row>
+		<Cell colspan="row">lorem</Cell>
+	</Row>
+</Table>
 
-```bash
-npm run dev
-
-# or start the server and open the app in a new browser tab
-npm run dev -- --open
-```
-
-Everything inside `src/lib` is part of your library, everything inside `src/routes` can be used as a showcase or preview app.
-
-## Building
-
-To build your library:
-
-```bash
-npm run package
-```
-
-To create a production version of your showcase app:
-
-```bash
-npm run build
-```
-
-You can preview the production build with `npm run preview`.
-
-> To deploy your app, you may need to install an [adapter](https://kit.svelte.dev/docs/adapters) for your target environment.
-
-## Publishing
-
-Go into the `package.json` and give your package the desired name through the `"name"` option. Also consider adding a `"license"` field and point it to a `LICENSE` file which you can create from a template (one popular option is the [MIT license](https://opensource.org/license/mit/)).
-
-To publish your library to [npm](https://www.npmjs.com):
-
-```bash
-npm publish
+<Table {columns}>
+	<Row>
+		<Cell>a</Cell>
+		<Cell>b</Cell>
+		<Cell>c</Cell>
+	</Row>
+	<Row>
+		<Cell>d</Cell>
+		<Cell>e</Cell>
+		<Cell>f</Cell>
+	</Row>
+</Table>
 ```

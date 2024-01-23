@@ -1,7 +1,7 @@
 <script lang="ts">
 	import { BROWSER } from 'esm-env';
 	import { writable } from 'svelte/store';
-	import { observe, type ColumnsSpec, type Grid } from './utils';
+	import { observe, type ColumnsSpec, type Grid } from './utils.js';
 
 	export let columns: ColumnsSpec | undefined = undefined;
 	const columns$ = writable<typeof columns>(columns);

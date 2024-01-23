@@ -1,5 +1,5 @@
 <script lang="ts">
-	import Table, { Row, Cell } from '$lib';
+	import Table, { Row, Cell } from './lib/index.js';
 	let columns: number[] = [];
 </script>
 

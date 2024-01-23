@@ -190,25 +190,36 @@ function availableSpace(row: GridRow, index: number): number {
 
 // counting columns & rows
 function setIndicesInGrid(grid: Grid): void {
+	const cellVarAlreadyAdded = new Set<Element>();
 	// row vars
 	for (let rowIndex = 0; rowIndex < grid.rows.length; rowIndex++) {
-		grid.rows[rowIndex].element?.style.setProperty('--table-row-index', `${rowIndex + 1}`);
-	}
+		const row = grid.rows[rowIndex];
+		row.element?.style.setProperty('--table-row-index', `${rowIndex + 1}`);
 
-	// cell vars
-	const varsSet = new Set<Element>();
-	for (const row of grid.rows) {
 		for (let colIndex = 0; colIndex < row.children.length; colIndex++) {
 			const cell = row.children[colIndex];
 			const el = cell.element;
 
-			if (varsSet.has(el)) continue;
+			addToArgument(el, 'data-column', `${colIndex + 1}`);
+			addToArgument(el, 'data-row', `${rowIndex + 1}`);
+
+			if (cellVarAlreadyAdded.has(el)) continue;
 
 			el.style.setProperty('--table-column-index', `${colIndex + 1}`);
 
-			varsSet.add(el);
+			cellVarAlreadyAdded.add(el);
 		}
 	}
+}
+
+function addToArgument(element: Element, attr: string, value: string) {
+	const oldStr = element.getAttribute(attr);
+	const oldArr = oldStr?.split(' ') ?? [];
+	if (oldArr.includes(value)) return;
+
+	const newArr = [...oldArr, value];
+	const newStr = newArr.join(' ');
+	element.setAttribute(attr, newStr);
 }
 
 // compute column and row sizes
