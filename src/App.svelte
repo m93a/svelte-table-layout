@@ -1,5 +1,5 @@
 <script lang="ts">
-	import Table, { Row, Cell } from './lib/index.js';
+	import { Table } from './lib/index.js';
 	let columns: number[] = [];
 </script>
 
@@ -12,16 +12,16 @@ for classic HTML tables with some new features, like decimal point alignment or 
 <p>
 	First table:
 	<Table>
-		<Table.Row>
-			<Table.Cell>1</Table.Cell>
-			<Table.Cell>helou</Table.Cell>
-			<Table.Cell>asdf 4</Table.Cell>
-		</Table.Row>
-		<Table.Row>
-			<Table.Cell>abc</Table.Cell>
-			<Table.Cell>x</Table.Cell>
-			<Table.Cell>b</Table.Cell>
-		</Table.Row>
+		<tr>
+			<td>1</td>
+			<td>helou</td>
+			<td>asdf 4</td>
+		</tr>
+		<tr>
+			<td>abc</td>
+			<td>x</td>
+			<td>b</td>
+		</tr>
 	</Table>
 </p>
 
@@ -29,97 +29,97 @@ for classic HTML tables with some new features, like decimal point alignment or 
 	Second table:
 
 	<Table>
-		<Row>
-			<Cell>yo</Cell>
-			<Cell>wazup</Cell>
-			<Cell>my dudes & dudettes</Cell>
-			<Cell>next cell</Cell>
-		</Row>
-		<Row>
-			<Cell>lorem</Cell>
-			<Cell>ipsum</Cell>
-			<Cell>sup</Cell>
-			<Cell>i'm doin great</Cell>
-		</Row>
+		<tr>
+			<td>yo</td>
+			<td>wazup</td>
+			<td>my dudes & dudettes</td>
+			<td>next cell</td>
+		</tr>
+		<tr>
+			<td>lorem</td>
+			<td>ipsum</td>
+			<td>sup</td>
+			<td>i'm doin great</td>
+		</tr>
 	</Table>
 </p>
 
 <h2>Colspan and rowspan</h2>
 <Table>
-	<Row>
-		<Cell>lil</Cell>
-		<Cell colspan={2} style="background: lightblue">widewidewide</Cell>
-		<Cell rowspan={2} style="background: lightpink">tall</Cell>
-		<Cell>wa</Cell>
-	</Row>
-	<Row>
-		<Cell>smol</Cell>
-		<Cell>tiny</Cell>
-		<Cell>mimi</Cell>
-		<Cell>nunu</Cell>
-	</Row>
+	<tr>
+		<td>lil</td>
+		<td colspan={2} style="background: lightblue">widewidewide</td>
+		<td rowspan={2} style="background: lightpink">tall</td>
+		<td>wa</td>
+	</tr>
+	<tr>
+		<td>smol</td>
+		<td>tiny</td>
+		<td>mimi</td>
+		<td>nunu</td>
+	</tr>
 </Table>
 
 <h2>Colored rows</h2>
 <Table>
-	<Row style="background: gray">
-		<Cell>grey</Cell>
-		<Cell>row</Cell>
-		<Cell>with no decoration</Cell>
-	</Row>
-	<Row style="background: pink; border: 1px solid red;">
-		<Cell colspan={2}>pink row</Cell>
-		<Cell>with red border</Cell>
-	</Row>
+	<tr style="background: gray">
+		<td>grey</td>
+		<td>row</td>
+		<td>with no decoration</td>
+	</tr>
+	<tr style="background: pink; border: 1px solid red;">
+		<td colspan={2}>pink row</td>
+		<td>with red border</td>
+	</tr>
 </Table>
 
 <h2>Copying table dimensions</h2>
 <p>
 	Template table:
 	<Table bind:computedColumnWidths={columns}>
-		<Row>
-			<Cell>a-really-long-cell</Cell>
-			<Cell>normal-cell</Cell>
-			<Cell>xd</Cell>
-		</Row>
-		<Row>
-			<Cell>lorem</Cell>
-			<Cell>ipsum</Cell>
-			<Cell>dolor-sit</Cell>
-		</Row>
+		<tr>
+			<td>a-really-long-cell</td>
+			<td>normal-cell</td>
+			<td>xd</td>
+		</tr>
+		<tr>
+			<td>lorem</td>
+			<td>ipsum</td>
+			<td>dolor-sit</td>
+		</tr>
 	</Table>
 </p>
 <p>
 	Reflecting table:
 	<Table {columns}>
-		<Row>
-			<Cell>a</Cell>
-			<Cell>b</Cell>
-			<Cell>c</Cell>
-		</Row>
-		<Row>
-			<Cell>d</Cell>
-			<Cell>e</Cell>
-			<Cell>f</Cell>
-		</Row>
+		<tr>
+			<td>a</td>
+			<td>b</td>
+			<td>c</td>
+		</tr>
+		<tr>
+			<td>d</td>
+			<td>e</td>
+			<td>f</td>
+		</tr>
 	</Table>
 </p>
 
 <h2>Column groups</h2>
 <Table columns={[{ span: 1 }, { span: 2 }, { span: 1 }, { span: 1 }]}>
-	<Row>
-		<Cell colspan="row">this cell spans the entire row</Cell>
-	</Row>
-	<Row>
-		<Cell>a</Cell>
-		<Cell>b</Cell>
-		<Cell>c</Cell>
-		<Cell>d</Cell>
-		<Cell>e</Cell>
-	</Row>
-	<Row>
-		<Cell>1</Cell>
-		<Cell colspan="group">2</Cell>
-		<Cell colspan="row">2</Cell>
-	</Row>
+	<tr>
+		<td colspan="row">this cell spans the entire row</td>
+	</tr>
+	<tr>
+		<td>a</td>
+		<td>b</td>
+		<td>c</td>
+		<td>d</td>
+		<td>e</td>
+	</tr>
+	<tr>
+		<td>1</td>
+		<td colspan="group">2</td>
+		<td colspan="row">2</td>
+	</tr>
 </Table>

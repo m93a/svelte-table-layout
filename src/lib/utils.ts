@@ -54,6 +54,7 @@ function fillInColumnSpec(cols: ColumnsSpec | undefined): FullColumnSpec[] {
 interface GridCell {
 	colspan: number;
 	rowspan: number;
+	forceColspan?: boolean;
 	element: HTMLTableCellElement;
 }
 interface GridRow {
@@ -114,6 +115,7 @@ function makeTableGrid(table: HTMLTableElement, colspec: FullColumnSpec[]) {
 
 			// the colspan specified by the user
 			const specifiedColspan = colspanOfCell(element);
+			const forceColspan = typeof specifiedColspan === 'string';
 
 			// the maximum colspan the cell would like to take
 			let intendedColspan: number;
@@ -127,7 +129,7 @@ function makeTableGrid(table: HTMLTableElement, colspec: FullColumnSpec[]) {
 
 			// place down the cell
 			const rowspan = rowspanOfCell(element);
-			const cell: GridCell = { element, colspan, rowspan };
+			const cell: GridCell = { element, colspan, rowspan, forceColspan };
 			for (let i = rowIndex; i < rowIndex + rowspan; i++) {
 				for (let j = colIndex; j < colIndex + colspan; j++) {
 					grid.rows[i] ??= { children: [] };
@@ -194,7 +196,7 @@ function setIndicesInGrid(grid: Grid): void {
 	// row vars
 	for (let rowIndex = 0; rowIndex < grid.rows.length; rowIndex++) {
 		const row = grid.rows[rowIndex];
-		row.element?.style.setProperty('--table-row-index', `${rowIndex + 1}`);
+		row.element?.style.setProperty('--c-ri', `${rowIndex + 1}`);
 
 		for (let colIndex = 0; colIndex < row.children.length; colIndex++) {
 			const cell = row.children[colIndex];
@@ -205,7 +207,8 @@ function setIndicesInGrid(grid: Grid): void {
 
 			if (cellVarAlreadyAdded.has(el)) continue;
 
-			el.style.setProperty('--table-column-index', `${colIndex + 1}`);
+			el.style.setProperty('--c-ci', `${colIndex + 1}`);
+			if (cell.forceColspan) el.style.setProperty('--c-cs', cell.colspan.toString());
 
 			cellVarAlreadyAdded.add(el);
 		}
@@ -214,12 +217,13 @@ function setIndicesInGrid(grid: Grid): void {
 
 function addToArgument(element: Element, attr: string, value: string) {
 	const oldStr = element.getAttribute(attr);
-	const oldArr = oldStr?.split(' ') ?? [];
-	if (oldArr.includes(value)) return;
+	const arr = oldStr?.split(' ');
 
-	const newArr = [...oldArr, value];
-	const newStr = newArr.join(' ');
-	element.setAttribute(attr, newStr);
+	if (!arr) return element.setAttribute(attr, value);
+	if (arr.includes(value)) return;
+
+	arr.push(value);
+	element.setAttribute(attr, arr.join(' '));
 }
 
 // compute column and row sizes
