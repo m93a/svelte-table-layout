@@ -196,11 +196,15 @@ function setIndicesInGrid(grid: Grid): void {
 	// row vars
 	for (let rowIndex = 0; rowIndex < grid.rows.length; rowIndex++) {
 		const row = grid.rows[rowIndex];
-		row.element?.style.setProperty('--c-ri', `${rowIndex + 1}`);
+		let rowSpan = 1;
+
+		row.element?.style.setProperty('--r-ri', `${rowIndex + 1}`);
 
 		for (let colIndex = 0; colIndex < row.children.length; colIndex++) {
 			const cell = row.children[colIndex];
 			const el = cell.element;
+
+			rowSpan = Math.max(cell.rowspan, rowSpan);
 
 			addToArgument(el, 'data-column', `${colIndex + 1}`);
 			addToArgument(el, 'data-row', `${rowIndex + 1}`);
@@ -212,6 +216,8 @@ function setIndicesInGrid(grid: Grid): void {
 
 			cellVarAlreadyAdded.add(el);
 		}
+
+		if (rowSpan > 1) row.element?.style.setProperty('--r-rs', `${rowSpan}`);
 	}
 }
 

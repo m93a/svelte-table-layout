@@ -62,6 +62,27 @@ for classic HTML tables with some new features, like decimal point alignment or 
 	</tr>
 </Table>
 
+<p>
+	with tbody:
+
+	<Table>
+		<tbody>
+			<tr>
+				<td>lil</td>
+				<td colspan={2} style="background: lightblue">widewidewide</td>
+				<td rowspan={2} style="background: lightpink">tall</td>
+				<td>wa</td>
+			</tr>
+			<tr>
+				<td>smol</td>
+				<td>tiny</td>
+				<td>mimi</td>
+				<td>nunu</td>
+			</tr>
+		</tbody>
+	</Table>
+</p>
+
 <h2>Colored rows</h2>
 <Table>
 	<tr style="background: gray">

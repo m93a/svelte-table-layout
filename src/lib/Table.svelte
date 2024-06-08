@@ -90,10 +90,13 @@
 		}
 
 		:global(tr) {
+			grid-template-rows: subgrid;
+			grid-row: var(--r-ri) / span var(--r-rs, 1);
+
 			:global(td),
 			:global(th) {
 				grid-column: var(--c-ci) / span var(--c-cs, 1);
-				grid-row: var(--c-ri) / span var(--c-rs, 1);
+				grid-row: span var(--c-rs, 1);
 			}
 		}
 	}
