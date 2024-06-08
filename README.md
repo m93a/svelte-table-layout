@@ -4,15 +4,15 @@ A dynamic table layout for Svelte, a drop-in replacement for HTML tables that us
 
 ```svelte
 <Table class="my-table">
-	<Row style="background: gray">
-		<Cell>grey</Cell>
-		<Cell>row</Cell>
-		<Cell>with no decoration</Cell>
-	</Row>
-	<Row style="background: pink; border: 1px solid red;">
-		<Cell colspan={2}>pink row</Cell>
-		<Cell>with red border</Cell>
-	</Row>
+	<tr style="background: gray">
+		<td>grey</td>
+		<td>row</td>
+		<td>with no decoration</td>
+	</tr>
+	<tr style="background: pink; border: 1px solid red;">
+		<td colspan={2}>pink row</td>
+		<td>with red border</td>
+	</tr>
 </Table>
 
 <style>
@@ -27,26 +27,26 @@ It also supports `colspan=row` to make cells span the entire row, and lets you a
 
 ```svelte
 <Table bind:computedColumnWidths={columns}>
-	<Row>
-		<Cell>a-really-long-cell</Cell>
-		<Cell>normal-cell</Cell>
-		<Cell>xd</Cell>
-	</Row>
-	<Row>
-		<Cell colspan="row">lorem</Cell>
-	</Row>
+	<tr>
+		<td>a-really-long-cell</td>
+		<td>normal-cell</td>
+		<td>xd</td>
+	</tr>
+	<tr>
+		<td colspan="row">lorem</td>
+	</tr>
 </Table>
 
 <Table {columns}>
-	<Row>
-		<Cell>a</Cell>
-		<Cell>b</Cell>
-		<Cell>c</Cell>
-	</Row>
-	<Row>
-		<Cell>d</Cell>
-		<Cell>e</Cell>
-		<Cell>f</Cell>
-	</Row>
+	<tr>
+		<td>a</td>
+		<td>b</td>
+		<td>c</td>
+	</tr>
+	<tr>
+		<td>d</td>
+		<td>e</td>
+		<td>f</td>
+	</tr>
 </Table>
 ```

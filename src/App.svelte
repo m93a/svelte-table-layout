@@ -29,18 +29,20 @@ for classic HTML tables with some new features, like decimal point alignment or 
 	Second table:
 
 	<Table>
-		<tr>
-			<td>yo</td>
-			<td>wazup</td>
-			<td>my dudes & dudettes</td>
-			<td>next cell</td>
-		</tr>
-		<tr>
-			<td>lorem</td>
-			<td>ipsum</td>
-			<td>sup</td>
-			<td>i'm doin great</td>
-		</tr>
+		<tbody>
+			<tr>
+				<td>yo</td>
+				<td>wazup</td>
+				<td>my dudes & dudettes</td>
+				<td>next cell</td>
+			</tr>
+			<tr>
+				<td>lorem</td>
+				<td>ipsum</td>
+				<td>sup</td>
+				<td>i'm doin great</td>
+			</tr>
+		</tbody>
 	</Table>
 </p>
 
